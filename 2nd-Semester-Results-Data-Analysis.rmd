@@ -1,0 +1,177 @@
+---
+title: "2nd Semester BBA IT Results Analysis"
+author: "Piyush Jain"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(readxl)
+library(dplyr)
+library(knitr)
+library(kableExtra)
+library(DT)
+library(tidyverse)
+library(grid)
+library(gridExtra)
+library(ggthemes)
+```
+
+## 2nd Semester BBA IT Results 
+
+Hello Everyone, who is reading this. My name is Piyush Jain, and this is my analysis of the my class results for the 2nd Semester. I have acquired my data and properly arranged it in a way that anyone who reads this will understand it. 
+In the following table, if any of my friends are reading this they can see there results in the bottom table.
+
+```{r results,echo= FALSE}
+results <- read_excel("D:\\Data Science Practise\\Sem.xlsx")
+datatable(results,options = list(pagelength = 6))
+```
+
+## Plots of BBA IT Results
+
+In the multiple plots that we have been given below we clearly see the number of students that have passed or failed in the subjects: 
+
+Python Programming,  Principles of Marketing, Environmental Studies, Functional English - II, Business Decision using Excel, Financial Accounting
+
+```{r combined, echo=FALSE}
+python_analysis <- results %>% group_by(Python) %>% summarize(Students = n()) %>% ggplot(aes(Python,Students)) +
+  geom_col() + 
+  xlab("SGPA of Students") + 
+  ylab("Number of Students") + 
+  ggtitle("Python Results") +
+  theme_wsj() +
+  theme(legend.position = "none",text = element_text(size = 10))
+
+
+marketing <- results %>% group_by(Marketing) %>% summarize(Students = n()) %>% ggplot(aes(Marketing,Students)) +
+  geom_col() + 
+  xlab("SGPA of Students") + 
+  ylab("Number of Students") + 
+  ggtitle("Marketing Results") +
+  theme_wsj() +
+  theme(legend.position = "none",text = element_text(size = 10))
+
+
+environment_analysis <- results %>% group_by(Environment) %>% summarize(Students = n()) %>% ggplot(aes(Environment,Students)) +
+  geom_col() + 
+  xlab("SGPA of Students") + 
+  ylab("Number of Students") + 
+  ggtitle("EVS Results") +
+  theme_wsj() +
+  theme(legend.position = "none",text = element_text(size = 10))
+
+english_analysis <- results %>% group_by(English) %>% summarize(Students = n()) %>% ggplot(aes(English,Students)) +
+  geom_col() + 
+  xlab("SGPA of Students") + 
+  ylab("Number of Students") + 
+  ggtitle("English Results") +
+  theme_wsj() +
+  theme(legend.position = "none",text = element_text(size = 10))
+
+
+accounts_analysis <- results %>% group_by(Accounting) %>% summarize(Students = n()) %>% ggplot(aes(Accounting,Students)) +
+  geom_col() + 
+  xlab("SGPA of Students") + 
+  ylab("Number of Students") + 
+  ggtitle("Accounting Results") +
+  theme_wsj() +
+  theme(legend.position = "none",text = element_text(size = 10))
+
+
+excel_analysis <- results %>% group_by(Excel) %>% summarize(Students = n()) %>% ggplot(aes(Excel,Students)) +
+  geom_col() + 
+  xlab("SGPA of Students") + 
+  ylab("Number of Students") + 
+  ggtitle("Excel Results") +
+  theme_wsj() +
+  theme(legend.position = "none",text = element_text(size = 10))
+
+
+combined_graphs <- grid.arrange(python_analysis,
+                                excel_analysis,
+                                accounts_analysis,
+                                english_analysis,
+                                environment_analysis,
+                                marketing)
+```
+
+## Python Plot
+
+The most terrifying of all subjects, was the python subject as you can see from the below more then 40% of the students have failed in the subject which is shocking to see from IT-eccentric course. Most of the students have marginally passed in this subject particularly.
+
+The failure of the students in this particular subject was the highest in comparison to any subject in the course.
+
+```{r python,echo = FALSE}
+python_analysis
+```
+
+## Excel Plot
+
+The Advanced Excel was a relatively easy subject in comparison to Python Programming.
+Most of the students have easily passed in this subject with good grades as the majority of students scored grades higher than A. 
+```{r excel,echo = FALSE}
+excel_analysis
+```
+
+## Marketing Plot 
+This was the scoring subject for most of the students, More than 90 % of students have passed in this subject with good grades, but a noteworthy notice in this particular subject no one has achieved the highest grade i.e O, which may be the reason of the subjects theoretical nature.
+
+```{r marketing, echo = FALSE}
+marketing
+```
+
+## English Plot
+
+This was a very easy subject to score in where more than 80% of the students scored grades more than A+, which is a good fact.
+```{r english, echo=FALSE}
+english_analysis
+```
+
+## Accounting Plot
+
+This was a tough subject to tackle with in the class, but most of the students scored pretty good grades in this subject as well.
+
+```{r accounting,echo=FALSE}
+accounts_analysis
+```
+
+## Environmental Studies Plot
+
+This was the most easiest subject out of all subjects and we can clearly see in the graph that majority of students have scored excellent grades in this subject as well.
+
+```{r es,echo=FALSE}
+environment_analysis
+```
+
+## Passing Students Plot Graph
+
+The following students of 32 have passed the IInd Semester and there results are showcased below:
+
+```{r passing,echo=FALSE}
+passing_graph <- results %>% filter(!is.na(SGPA))%>% 
+  mutate(`Name of Student` = reorder(`Name of Student`,SGPA)) %>%
+  arrange(desc(SGPA)) %>%
+  ggplot(aes(`Name of Student`,SGPA)) +
+  geom_bar(stat = "identity") +
+  coord_flip() + 
+  theme_economist() + 
+  theme(text = element_text(size = 10)) + 
+  ggtitle("Passing Students")
+passing_graph
+```
+
+## Top 10 performing students
+
+This semester the top 10 students performed are given below in the table where most of the students had a tough time, these students passed with an exceptional grade.
+As always Rahim has aced this exams as the top ranker.
+Congratulations to him!
+
+```{r top10,echo = FALSE}
+top_10 <- results %>% filter(!is.na(SGPA))%>% 
+  mutate(`Name of Student` = reorder(`Name of Student`,SGPA)) %>%
+  arrange(desc(SGPA)) %>%
+  head(10)
+kable(top_10,"html") %>% kable_styling(full_width = FALSE)
+```
+
