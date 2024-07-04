@@ -7,7 +7,7 @@ python_analysis <- results %>% group_by(Python) %>% summarize(Students = n()) %>
   geom_col() + 
   xlab("SGPA of Students") + 
   ylab("Number of Students") + 
-  ggtitle("Student Results in Python") +
+  ggtitle("Python Results") +
   theme_wsj() +
   theme(legend.position = "none",text = element_text(size = 10))
 python_analysis
@@ -17,7 +17,7 @@ marketing <- results %>% group_by(Marketing) %>% summarize(Students = n()) %>% g
   geom_col() + 
   xlab("SGPA of Students") + 
   ylab("Number of Students") + 
-  ggtitle("Principles of Marketing") +
+  ggtitle("Marketing Results") +
   theme_wsj() +
   theme(legend.position = "none",text = element_text(size = 10))
 marketing
